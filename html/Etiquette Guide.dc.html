@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#526B55"/><circle cx="50" cy="50" r="20" fill="none" stroke="#F8F7F2" stroke-width="5"/><circle cx="50" cy="50" r="7" fill="#F8F7F2"/></svg></template>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F8F7F2;color:#303830;font-family:Figtree,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#526B55}a:hover{color:#303830}
+button{font-family:inherit}
+button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid #526B55;outline-offset:2px}
+@keyframes wm-pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:.35}}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#F8F7F2;color:#303830;font-family:Figtree,system-ui,sans-serif;font-size:16px;line-height:1.55">
+
+<header style="max-width:1200px;margin:0 auto;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+  <button onClick="{{ goHome }}" style="display:flex;align-items:center;gap:10px;background:none;border:none;padding:4px;cursor:pointer;color:#303830">
+    <span style="width:22px;height:22px;border-radius:50%;border:2px solid #526B55;display:flex;align-items:center;justify-content:center"><span style="width:8px;height:8px;border-radius:50%;background:#526B55"></span></span>
+    <span style="font-family:Newsreader,Georgia,serif;font-size:22px;letter-spacing:-0.01em">Customs Prep</span>
+  </button>
+  <sc-if value="{{ isResults }}" hint-placeholder-val="{{ false }}">
+    <button onClick="{{ newGuide }}" style="display:flex;align-items:center;gap:8px;background:#FCFBF7;border:1px solid #CFD8CA;color:#303830;border-radius:999px;padding:9px 16px;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#E8EDE4">+ New guide</button>
+  </sc-if>
+</header>
+
+<sc-if value="{{ isInput }}" hint-placeholder-val="{{ true }}">
+<main data-screen-label="Input" style="max-width:680px;margin:0 auto;padding:32px 24px 80px">
+  <p style="margin:0 0 12px;font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#526B55">Etiquette guide</p>
+  <h1 style="margin:0 0 14px;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:clamp(36px,6vw,52px);line-height:1.08;letter-spacing:-0.02em;text-wrap:balance">Know the customs before you arrive.</h1>
+  <p style="margin:0 0 32px;color:#5F665D;font-size:17px;max-width:540px;text-wrap:pretty">Describe what you're planning and where. You'll get a step-by-step guide with what to do, what to watch for, and how sure each piece of advice is.</p>
+
+  <form onSubmit="{{ submit }}" noValidate="{{ true }}" style="background:#FCFBF7;border:1px solid #DDE3D8;border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:22px;box-shadow:0 1px 2px rgba(48,56,48,0.04),0 8px 24px rgba(48,56,48,0.04)">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <label for="wm-activity" style="font-weight:600;font-size:15px">Describe your activity</label>
+      <textarea id="wm-activity" rows="4" value="{{ activity }}" onChange="{{ onActivity }}" aria-invalid="{{ activityInvalid }}" placeholder="What are you planning to do? For example, attend a business dinner, visit a place of worship, negotiate with a client, or meet your partner's family." style="width:100%;resize:vertical;font:inherit;font-size:16px;line-height:1.5;color:#303830;background:#FFFFFF;border:1.5px solid {{ activityBorder }};border-radius:12px;padding:14px 16px"></textarea>
+      <sc-if value="{{ errActivity }}" hint-placeholder-val="{{ false }}">
+        <p role="alert" style="margin:0;font-size:14px;color:#9A4F37">{{ errActivity }}</p>
+      </sc-if>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <label for="wm-country" style="font-weight:600;font-size:15px">Country in context</label>
+      <input id="wm-country" type="text" value="{{ country }}" onChange="{{ onCountry }}" aria-invalid="{{ countryInvalid }}" autoComplete="country-name" placeholder="Enter the country, e.g., Japan, India, France." style="width:100%;font:inherit;font-size:16px;color:#303830;background:#FFFFFF;border:1.5px solid {{ countryBorder }};border-radius:12px;padding:13px 16px">
+      <sc-if value="{{ errCountry }}" hint-placeholder-val="{{ false }}">
+        <p role="alert" style="margin:0;font-size:14px;color:#9A4F37">{{ errCountry }}</p>
+      </sc-if>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+      <span style="font-size:13px;color:#5F665D;margin-right:2px">Try</span>
+      <sc-for list="{{ examples }}" as="ex" hint-placeholder-count="3">
+        <button type="button" onClick="{{ ex.use }}" style="background:#E8EDE4;border:1px solid transparent;color:#303830;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer" style-hover="border-color:#879B83">{{ ex.label }}</button>
+      </sc-for>
+    </div>
+    <button type="submit" style="background:#526B55;color:#FFFFFF;border:none;border-radius:12px;padding:16px 20px;font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px" style-hover="background:#435A46">Explore the Etiquette <span aria-hidden="true">→</span></button>
+  </form>
+
+  <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:20px;font-size:14px;color:#5F665D">
+    <span>Advice is AI-generated and labelled by confidence.</span>
+    <div style="display:flex;gap:16px">
+      <sc-if value="{{ canResume }}" hint-placeholder-val="{{ false }}">
+        <button type="button" onClick="{{ resume }}" style="background:none;border:none;padding:0;color:#526B55;font-size:14px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px">Resume last guide</button>
+      </sc-if>
+      <button type="button" onClick="{{ loadSample }}" style="background:none;border:none;padding:0;color:#526B55;font-size:14px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px">View a sample guide</button>
+    </div>
+  </div>
+</main>
+</sc-if>
+
+<sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="Loading" aria-live="polite" style="max-width:560px;margin:0 auto;padding:64px 24px">
+  <p style="margin:0 0 8px;font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#526B55">{{ country }}</p>
+  <h1 style="margin:0 0 32px;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:34px;line-height:1.15;letter-spacing:-0.01em">Preparing your guide</h1>
+  <ol style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0">
+    <sc-for list="{{ phases }}" as="ph" hint-placeholder-count="4">
+      <li style="display:flex;gap:16px;align-items:flex-start">
+        <div style="display:flex;flex-direction:column;align-items:center;width:20px">
+          <span style="width:20px;height:20px;border-radius:50%;border:2px solid {{ ph.ring }};background:{{ ph.fill }};display:flex;align-items:center;justify-content:center;color:#FFFFFF;font-size:11px;font-weight:700">{{ ph.mark }}{{ ph.pulse }}</span>
+          <span style="width:2px;height:28px;background:#DDE3D8;visibility:{{ ph.lineVis }}"></span>
+        </div>
+        <span style="font-size:16px;color:{{ ph.color }};padding-top:0">{{ ph.label }}</span>
+      </li>
+    </sc-for>
+  </ol>
+  <p style="margin:24px 0 0;font-size:14px;color:#5F665D">This usually takes 20–40 seconds.</p>
+</main>
+</sc-if>
+
+<sc-if value="{{ isClarify }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="Clarify" style="max-width:640px;margin:0 auto;padding:40px 24px 80px">
+  <p style="margin:0 0 12px;font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#526B55">One quick question</p>
+  <h1 style="margin:0 0 12px;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:34px;line-height:1.15;letter-spacing:-0.01em;text-wrap:pretty">{{ clarifyQuestion }}</h1>
+  <p style="margin:0 0 24px;color:#5F665D">A little more detail helps avoid generic advice. You wrote: “{{ activity }}” in {{ country }}.</p>
+  <form onSubmit="{{ submitClarify }}" style="background:#FCFBF7;border:1px solid #DDE3D8;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      <sc-for list="{{ clarifySuggestions }}" as="sg" hint-placeholder-count="3">
+        <button type="button" onClick="{{ sg.use }}" style="background:#E8EDE4;border:1px solid transparent;color:#303830;border-radius:999px;padding:7px 14px;font-size:14px;cursor:pointer" style-hover="border-color:#879B83">{{ sg.label }}</button>
+      </sc-for>
+    </div>
+    <label for="wm-clarify" style="font-weight:600;font-size:15px">Your answer</label>
+    <textarea id="wm-clarify" rows="3" value="{{ clarifyAnswer }}" onChange="{{ onClarify }}" style="width:100%;resize:vertical;font:inherit;font-size:16px;color:#303830;background:#FFFFFF;border:1.5px solid #CFD8CA;border-radius:12px;padding:12px 14px"></textarea>
+    <sc-if value="{{ errClarify }}" hint-placeholder-val="{{ false }}">
+      <p role="alert" style="margin:0;font-size:14px;color:#9A4F37">{{ errClarify }}</p>
+    </sc-if>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between">
+      <button type="button" onClick="{{ backToInput }}" style="background:none;border:1px solid #CFD8CA;color:#303830;border-radius:12px;padding:12px 18px;font-size:15px;font-weight:600;cursor:pointer">Edit activity</button>
+      <button type="submit" style="background:#526B55;color:#FFFFFF;border:none;border-radius:12px;padding:12px 20px;font-size:15px;font-weight:600;cursor:pointer" style-hover="background:#435A46">Continue →</button>
+    </div>
+  </form>
+</main>
+</sc-if>
+
+<sc-if value="{{ isError }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="Error" style="max-width:560px;margin:0 auto;padding:56px 24px">
+  <div role="alert" style="background:#FCFBF7;border:1px solid #DDE3D8;border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:14px">
+    <span style="width:14px;height:14px;transform:rotate(45deg);border:2px solid #9A4F37"></span>
+    <h1 style="margin:0;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:30px;line-height:1.2">We couldn't build this guide</h1>
+    <p style="margin:0;color:#5F665D">{{ errorMsg }}</p>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:6px">
+      <button onClick="{{ retry }}" style="background:#526B55;color:#FFFFFF;border:none;border-radius:12px;padding:12px 20px;font-size:15px;font-weight:600;cursor:pointer" style-hover="background:#435A46">Try again</button>
+      <button onClick="{{ backToInput }}" style="background:none;border:1px solid #CFD8CA;color:#303830;border-radius:12px;padding:12px 18px;font-size:15px;font-weight:600;cursor:pointer">Edit inputs</button>
+    </div>
+  </div>
+</main>
+</sc-if>
+
+<sc-if value="{{ isResults }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="Guide" style="max-width:1200px;margin:0 auto;padding:16px 24px 96px">
+
+  <section style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:28px">
+    <div style="max-width:720px">
+      <p style="margin:0 0 10px;font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#526B55">{{ guide.country }}</p>
+      <h1 style="margin:0 0 10px;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:clamp(30px,4.5vw,44px);line-height:1.1;letter-spacing:-0.02em;text-wrap:balance">{{ guide.title }}</h1>
+      <sc-if value="{{ guide.scopeNote }}" hint-placeholder-val="{{ false }}">
+        <p style="margin:0;color:#5F665D;text-wrap:pretty">{{ guide.scopeNote }}</p>
+      </sc-if>
+    </div>
+    <div style="min-width:220px;flex:0 1 280px">
+      <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:8px"><span style="font-weight:600">Overall preparation</span><span style="color:#5F665D">{{ overallText }}</span></div>
+      <div role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ overallPct }}" aria-label="Overall progress" style="height:8px;border-radius:999px;background:#E8EDE4;overflow:hidden"><div style="height:100%;width:{{ overallWidth }};background:#526B55;border-radius:999px;transition:width .3s ease"></div></div>
+    </div>
+  </section>
+
+  <sc-if value="{{ allDone }}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="display:flex;align-items:center;gap:14px;background:#E8EDE4;border-radius:16px;padding:16px 20px;margin-bottom:24px">
+      <span style="width:28px;height:28px;border-radius:50%;background:#526B55;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-weight:700;flex:none">✓</span>
+      <span><strong style="font-weight:600">You've reviewed every step.</strong> <span style="color:#5F665D">Stay observant on the day and follow your hosts' lead.</span></span>
+    </div>
+  </sc-if>
+
+  <nav aria-label="Activity steps" style="margin-bottom:28px">
+    <sc-if value="{{ horizontal }}" hint-placeholder-val="{{ true }}">
+      <div style="overflow-x:auto;padding:4px 2px 8px">
+        <ol style="list-style:none;margin:0;padding:0;display:flex;position:relative;min-width:{{ trackMin }}">
+          <sc-for list="{{ checkpoints }}" as="cp" hint-placeholder-count="6">
+            <li style="flex:1 1 0;min-width:0;position:relative;display:flex;justify-content:center">
+              <span aria-hidden="true" style="position:absolute;top:21px;left:0;right:0;height:2px;background:#DDE3D8;visibility:{{ cp.lineVis }}"></span>
+              <span aria-hidden="true" style="position:absolute;top:21px;left:0;width:50%;height:2px;background:{{ cp.leftLine }}"></span>
+              <span aria-hidden="true" style="position:absolute;top:21px;right:0;width:50%;height:2px;background:{{ cp.rightLine }}"></span>
+              <button onClick="{{ cp.select }}" aria-current="{{ cp.ariaCurrent }}" aria-label="{{ cp.aria }}" style="position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:none;padding:0 6px;cursor:pointer;color:#303830;width:100%">
+                <span style="width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;background:{{ cp.bg }};color:{{ cp.fg }};border:2px solid {{ cp.border }};box-shadow:{{ cp.shadow }};transition:all .2s ease">{{ cp.mark }}</span>
+                <span style="font-size:13px;line-height:1.3;text-align:center;font-weight:{{ cp.weight }};color:{{ cp.labelColor }};text-wrap:balance">{{ cp.title }}</span>
+                <span style="font-size:12px;color:#5F665D">{{ cp.progress }}</span>
+              </button>
+            </li>
+          </sc-for>
+        </ol>
+      </div>
+    </sc-if>
+    <sc-if value="{{ vertical }}" hint-placeholder-val="{{ false }}">
+      <ol style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column">
+        <sc-for list="{{ checkpoints }}" as="cp" hint-placeholder-count="6">
+          <li style="position:relative">
+            <span aria-hidden="true" style="position:absolute;left:19px;top:40px;bottom:-4px;width:2px;background:#DDE3D8;visibility:{{ cp.vLineVis }}"></span>
+            <button onClick="{{ cp.select }}" aria-current="{{ cp.ariaCurrent }}" aria-label="{{ cp.aria }}" style="position:relative;display:flex;align-items:center;gap:14px;width:100%;min-height:52px;background:{{ cp.rowBg }};border:none;border-radius:12px;padding:4px 10px 4px 0;cursor:pointer;color:#303830;text-align:left">
+              <span style="width:40px;height:40px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;background:{{ cp.bg }};color:{{ cp.fg }};border:2px solid {{ cp.border }}">{{ cp.mark }}</span>
+              <span style="flex:1;font-size:15px;line-height:1.3;font-weight:{{ cp.weight }}">{{ cp.title }}</span>
+              <span style="font-size:12px;color:#5F665D">{{ cp.progress }}</span>
+            </button>
+          </li>
+        </sc-for>
+      </ol>
+    </sc-if>
+  </nav>
+
+  <div style="display:grid;grid-template-columns:{{ gridCols }};gap:28px;align-items:start">
+
+    <article id="wm-step" aria-labelledby="wm-step-title" style="background:#FCFBF7;border:1px solid #DDE3D8;border-radius:24px;padding:clamp(20px,3vw,32px);box-shadow:0 1px 2px rgba(48,56,48,0.04),0 12px 32px rgba(48,56,48,0.05);min-width:0">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;margin-bottom:8px">
+        <p style="margin:0;font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#526B55;white-space:nowrap;flex:none">Step {{ stepNum }} of {{ stepCount }}</p>
+        <p style="margin:0;font-size:13px;color:#5F665D">{{ step.progress }}</p>
+      </div>
+      <h2 id="wm-step-title" style="margin:0 0 10px;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:clamp(26px,3.4vw,34px);line-height:1.15;letter-spacing:-0.01em;text-wrap:balance">{{ step.title }}</h2>
+      <p style="margin:0 0 16px;color:#454D45;font-size:17px;text-wrap:pretty">{{ step.summary }}</p>
+      <div style="height:6px;border-radius:999px;background:#E8EDE4;overflow:hidden;margin-bottom:24px"><div style="height:100%;width:{{ step.width }};background:#879B83;transition:width .3s ease"></div></div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="3">
+          <section style="border:1px solid #E1E6DC;border-radius:16px;background:#FFFFFF;overflow:hidden">
+            <button onClick="{{ sec.toggle }}" aria-expanded="{{ sec.open }}" style="width:100%;display:flex;align-items:center;gap:12px;background:none;border:none;padding:16px 18px;cursor:pointer;color:#303830;text-align:left">
+              <span style="flex:1;font-weight:600;font-size:16px">{{ sec.label }}</span>
+              <span style="font-size:13px;color:#5F665D">{{ sec.countText }}</span>
+              <span aria-hidden="true" style="display:inline-block;transform:{{ sec.chevron }};transition:transform .2s ease;color:#526B55;font-size:14px">▾</span>
+            </button>
+            <sc-if value="{{ sec.open }}" hint-placeholder-val="{{ true }}">
+              <ul style="list-style:none;margin:0;padding:0 18px 10px;display:flex;flex-direction:column">
+                <sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="3">
+                  <li style="display:flex;gap:14px;padding:12px 0;border-top:1px solid #EEF1EA">
+                    <button role="checkbox" aria-checked="{{ it.checked }}" aria-label="{{ it.aria }}" onClick="{{ it.toggle }}" style="flex:none;width:26px;height:26px;margin-top:1px;border-radius:8px;border:2px solid {{ it.boxBorder }};background:{{ it.boxBg }};color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;cursor:pointer;padding:0">{{ it.mark }}</button>
+                    <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
+                      <span style="color:{{ it.textColor }};text-decoration:{{ it.deco }};text-wrap:pretty">{{ it.text }}</span>
+                      <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+                        <sc-if value="{{ it.isHigh }}" hint-placeholder-val="{{ true }}">
+                          <span title="{{ it.confTip }}" style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap;flex:none;font-size:12px;font-weight:600;color:#3F5642;background:#E8EDE4;border-radius:999px;padding:3px 10px 3px 8px;cursor:help"><span style="width:8px;height:8px;border-radius:50%;background:#526B55"></span>High confidence</span>
+                        </sc-if>
+                        <sc-if value="{{ it.isModerate }}" hint-placeholder-val="{{ false }}">
+                          <span title="{{ it.confTip }}" style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap;flex:none;font-size:12px;font-weight:600;color:#6E5422;background:#F3ECDD;border-radius:999px;padding:3px 10px 3px 8px;cursor:help"><span style="width:8px;height:8px;border-radius:50%;border:1.5px solid #8A6A2E"></span>Moderate confidence</span>
+                        </sc-if>
+                        <sc-if value="{{ it.isLow }}" hint-placeholder-val="{{ false }}">
+                          <span title="{{ it.confTip }}" style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap;flex:none;font-size:12px;font-weight:600;color:#86422D;background:#F5E6DF;border-radius:999px;padding:3px 10px 3px 8px;cursor:help"><span style="width:7px;height:7px;transform:rotate(45deg);border:1.5px solid #9A4F37"></span>Low confidence</span>
+                        </sc-if>
+                        <sc-if value="{{ it.hasBasis }}" hint-placeholder-val="{{ false }}">
+                          <span style="font-size:12px;color:#5F665D;border:1px solid #DDE3D8;border-radius:999px;padding:2px 9px;white-space:nowrap">{{ it.basisLabel }}</span>
+                        </sc-if>
+                      </div>
+                      <sc-if value="{{ it.hasNote }}" hint-placeholder-val="{{ false }}">
+                        <p style="margin:0;font-size:14px;color:#5F665D;text-wrap:pretty">{{ it.note }}</p>
+                      </sc-if>
+                    </div>
+                  </li>
+                </sc-for>
+              </ul>
+            </sc-if>
+          </section>
+        </sc-for>
+
+        <sc-if value="{{ hasLow }}" hint-placeholder-val="{{ false }}">
+          <section style="border:1.5px dashed #D2B3A6;border-radius:16px;background:#FBF6F2;overflow:hidden">
+            <button onClick="{{ toggleLow }}" aria-expanded="{{ lowOpen }}" style="width:100%;display:flex;align-items:center;gap:12px;background:none;border:none;padding:16px 18px;cursor:pointer;color:#303830;text-align:left">
+              <span aria-hidden="true" style="width:10px;height:10px;transform:rotate(45deg);border:2px solid #9A4F37;flex:none"></span>
+              <span style="flex:1;font-weight:600;font-size:16px">Low confidence / Context-dependent</span>
+              <span style="font-size:13px;color:#5F665D">{{ lowCount }}</span>
+              <span aria-hidden="true" style="display:inline-block;transform:{{ lowChevron }};transition:transform .2s ease;color:#9A4F37;font-size:14px">▾</span>
+            </button>
+            <sc-if value="{{ lowOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:0 18px 12px">
+                <p style="margin:0 0 4px;font-size:14px;color:#5F665D">These may apply, but evidence is thin or practice varies a lot. Watch what others do before acting on them.</p>
+                <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column">
+                  <sc-for list="{{ lowItems }}" as="it" hint-placeholder-count="1">
+                    <li style="display:flex;gap:14px;padding:12px 0;border-top:1px solid #EFE2DA">
+                      <button role="checkbox" aria-checked="{{ it.checked }}" aria-label="{{ it.aria }}" onClick="{{ it.toggle }}" style="flex:none;width:26px;height:26px;margin-top:1px;border-radius:8px;border:2px solid {{ it.boxBorder }};background:{{ it.boxBg }};color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;cursor:pointer;padding:0">{{ it.mark }}</button>
+                      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
+                        <span style="color:{{ it.textColor }};text-decoration:{{ it.deco }};text-wrap:pretty">{{ it.text }}</span>
+                        <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+                          <span title="{{ it.confTip }}" style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap;flex:none;font-size:12px;font-weight:600;color:#86422D;background:#F5E6DF;border-radius:999px;padding:3px 10px 3px 8px;cursor:help"><span style="width:7px;height:7px;transform:rotate(45deg);border:1.5px solid #9A4F37"></span>Low confidence</span>
+                          <span style="font-size:12px;color:#5F665D;border:1px solid #E6D6CD;border-radius:999px;padding:2px 9px;white-space:nowrap">{{ it.typeLabel }}</span>
+                          <sc-if value="{{ it.hasBasis }}" hint-placeholder-val="{{ false }}">
+                            <span style="font-size:12px;color:#5F665D;border:1px solid #E6D6CD;border-radius:999px;padding:2px 9px;white-space:nowrap">{{ it.basisLabel }}</span>
+                          </sc-if>
+                        </div>
+                        <sc-if value="{{ it.hasNote }}" hint-placeholder-val="{{ false }}">
+                          <p style="margin:0;font-size:14px;color:#5F665D;text-wrap:pretty"><strong style="font-weight:600;color:#86422D">Why uncertain:</strong> {{ it.note }}</p>
+                        </sc-if>
+                      </div>
+                    </li>
+                  </sc-for>
+                </ul>
+              </div>
+            </sc-if>
+          </section>
+        </sc-if>
+
+        <sc-if value="{{ step.why }}" hint-placeholder-val="{{ true }}">
+          <section style="border-radius:16px;background:#E8EDE4;overflow:hidden">
+            <button onClick="{{ toggleWhy }}" aria-expanded="{{ whyOpen }}" style="width:100%;display:flex;align-items:center;gap:12px;background:none;border:none;padding:16px 18px;cursor:pointer;color:#303830;text-align:left">
+              <span style="flex:1;font-weight:600;font-size:16px">Why it matters</span>
+              <span aria-hidden="true" style="display:inline-block;transform:{{ whyChevron }};transition:transform .2s ease;color:#526B55;font-size:14px">▾</span>
+            </button>
+            <sc-if value="{{ whyOpen }}" hint-placeholder-val="{{ true }}">
+              <p style="margin:0;padding:0 18px 18px;color:#3A433A;text-wrap:pretty">{{ step.why }}</p>
+            </sc-if>
+          </section>
+        </sc-if>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;gap:12px;margin-top:24px;flex-wrap:wrap">
+        <button onClick="{{ prev }}" disabled="{{ isFirst }}" style="background:none;border:1px solid #CFD8CA;color:#303830;border-radius:12px;padding:12px 18px;font-size:15px;font-weight:600;cursor:pointer;opacity:{{ prevOpacity }}">← Previous</button>
+        <button onClick="{{ next }}" style="background:#526B55;color:#FFFFFF;border:none;border-radius:12px;padding:12px 20px;font-size:15px;font-weight:600;cursor:pointer" style-hover="background:#435A46">{{ nextLabel }}</button>
+      </div>
+    </article>
+
+    <aside aria-label="Preparation summary" style="display:flex;flex-direction:column;gap:16px;min-width:0;position:{{ asidePos }};top:16px">
+      <section style="background:#FCFBF7;border:1px solid #DDE3D8;border-radius:20px;padding:22px">
+        <h2 style="margin:0 0 16px;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:24px">Preparation summary</h2>
+        <sc-if value="{{ hasPrinciples }}" hint-placeholder-val="{{ true }}">
+          <h3 style="margin:0 0 8px;font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#526B55">Key principles</h3>
+          <ul style="margin:0 0 18px;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:15px">
+            <sc-for list="{{ guide.summary.principles }}" as="p" hint-placeholder-count="3"><li style="text-wrap:pretty">{{ p }}</li></sc-for>
+          </ul>
+        </sc-if>
+        <sc-if value="{{ hasMistakes }}" hint-placeholder-val="{{ true }}">
+          <h3 style="margin:0 0 8px;font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#86422D">Critical mistakes to avoid</h3>
+          <ul style="margin:0 0 18px;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:15px">
+            <sc-for list="{{ guide.summary.mistakes }}" as="p" hint-placeholder-count="3"><li style="text-wrap:pretty">{{ p }}</li></sc-for>
+          </ul>
+        </sc-if>
+        <sc-if value="{{ hasSensitive }}" hint-placeholder-val="{{ true }}">
+          <h3 style="margin:0 0 8px;font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6E5422">Sensitive or context-dependent</h3>
+          <ul style="margin:0 0 18px;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:15px">
+            <sc-for list="{{ guide.summary.sensitive }}" as="p" hint-placeholder-count="2"><li style="text-wrap:pretty">{{ p }}</li></sc-for>
+          </ul>
+        </sc-if>
+        <h3 style="margin:0 0 4px;font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#526B55">Key actions</h3>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column">
+          <sc-for list="{{ keyActions }}" as="ka" hint-placeholder-count="4">
+            <li style="display:flex;gap:12px;padding:10px 0;border-top:1px solid #EEF1EA">
+              <button role="checkbox" aria-checked="{{ ka.checked }}" aria-label="{{ ka.aria }}" onClick="{{ ka.toggle }}" style="flex:none;width:24px;height:24px;border-radius:7px;border:2px solid {{ ka.boxBorder }};background:{{ ka.boxBg }};color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;cursor:pointer;padding:0">{{ ka.mark }}</button>
+              <div style="flex:1;min-width:0">
+                <span style="font-size:14px;color:{{ ka.textColor }};text-decoration:{{ ka.deco }};text-wrap:pretty">{{ ka.text }}</span>
+                <button onClick="{{ ka.go }}" style="display:block;background:none;border:none;padding:2px 0 0;font-size:12px;color:#526B55;cursor:pointer;text-decoration:underline;text-underline-offset:2px">Step {{ ka.stepNum }}</button>
+              </div>
+            </li>
+          </sc-for>
+        </ul>
+      </section>
+
+      <section style="border:1px solid #DDE3D8;border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:12px">
+        <h2 style="margin:0;font-size:15px;font-weight:600">How to read confidence</h2>
+        <div style="display:flex;gap:10px;align-items:baseline;font-size:14px"><span style="width:9px;height:9px;border-radius:50%;background:#526B55;flex:none;transform:translateY(-1px)"></span><span><strong style="font-weight:600">High</strong> <span style="color:#5F665D">— widely documented and consistently observed.</span></span></div>
+        <div style="display:flex;gap:10px;align-items:baseline;font-size:14px"><span style="width:9px;height:9px;border-radius:50%;border:1.5px solid #8A6A2E;flex:none;transform:translateY(-1px)"></span><span><strong style="font-weight:600">Moderate</strong> <span style="color:#5F665D">— common, but depends on setting, region or people involved.</span></span></div>
+        <div style="display:flex;gap:10px;align-items:baseline;font-size:14px"><span style="width:8px;height:8px;transform:rotate(45deg) translateY(-1px);border:1.5px solid #9A4F37;flex:none"></span><span><strong style="font-weight:600">Low</strong> <span style="color:#5F665D">— limited evidence or highly variable. Kept separate.</span></span></div>
+        <sc-if value="{{ guide.limitations }}" hint-placeholder-val="{{ false }}">
+          <p style="margin:4px 0 0;font-size:13px;color:#5F665D;border-top:1px solid #E1E6DC;padding-top:12px;text-wrap:pretty"><strong style="font-weight:600;color:#303830">Limitations:</strong> {{ guide.limitations }}</p>
+        </sc-if>
+        <p style="margin:0;font-size:13px;color:#5F665D;text-wrap:pretty">{{ provenance }}</p>
+        <button onClick="{{ resetChecks }}" style="align-self:flex-start;background:none;border:none;padding:0;font-size:13px;color:#526B55;cursor:pointer;text-decoration:underline;text-underline-offset:2px">Reset checklist</button>
+      </section>
+    </aside>
+  </div>
+</main>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;model&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;sonnet&quot;,&quot;haiku&quot;],&quot;default&quot;:&quot;sonnet&quot;,&quot;tsType&quot;:&quot;'sonnet'|'haiku'&quot;},&quot;timeline&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;horizontal&quot;,&quot;vertical&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;'auto'|'horizontal'|'vertical'&quot;},&quot;showBasis&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const STORE = 'waymark:v1';
+const BASIS = { convention: 'Widely observed', formal: 'Formal protocol', varies: 'Varies by region or group', context: 'Context-dependent' };
+const TYPES = { do: 'What to do', etiquette: 'Etiquette to follow', careful: 'What to be careful about' };
+const CONF_TIP = {
+  high: 'High confidence: widely documented and consistently observed in this context.',
+  moderate: 'Moderate confidence: common, but depends on the setting, region or people involved.',
+  low: 'Low confidence: limited evidence or highly variable practice.'
+};
+const PHASES = ['Reading your activity', 'Breaking it into steps', 'Checking cultural context', 'Weighing confidence for each tip'];
+const EXAMPLES = [
+  { label: 'Business dinner · Japan', activity: 'Attending a business dinner with Japanese clients', country: 'Japan' },
+  { label: 'Temple visit · India', activity: 'Visiting a Hindu temple for the first time as a tourist', country: 'India' },
+  { label: "Partner's family · France", activity: "Meeting my partner's parents for Sunday lunch at their home", country: 'France' }
+];
+
+const SYSTEM = `You are a careful cross-cultural etiquette advisor. Given an activity and a country, produce a practical step-by-step preparation guide.
+
+Rules:
+- Decompose the activity into 4-8 chronological, independently actionable steps. Granular enough to capture moments where etiquette matters, not repetitive.
+- For each step give 2-4 items per type: "do" (recommended actions), "etiquette" (social norms/manners), "careful" (mistakes, sensitivities). Fewer is fine; skip types with nothing useful.
+- Each item gets its own confidence: "high" (widely documented, consistently observed), "moderate" (common but setting/region/generation dependent; add a short note qualifying it), "low" (thin evidence or highly variable; note MUST explain the uncertainty). Base confidence on evidence strength and specificity, not fluency.
+- Each item gets a basis: "convention" (widely observed social convention), "formal" (formal rule or established protocol, including legal/institutional requirements), "varies" (varies by region, community, organisation, generation or person), "context" (situational, cannot be generalised).
+- Never invent norms or present stereotypes as fact. Do not treat the country as homogeneous. If you are not reasonably confident something is real, omit it. No citations or URLs.
+- Be specific and practical; avoid generic advice ("be polite", "be respectful") unless made concrete.
+- Mark 1 item per step as "key": true for the consolidated checklist (the most important action).
+- Plain, concise language. Not preachy.
+- If the activity is too vague to give useful, specific guidance (e.g. "going out", "a meeting"), return status "clarify" with one focused question and 3 short suggested answers instead of a guide.
+
+Respond with ONLY valid JSON, no prose, matching:
+{"status":"ok"|"clarify",
+ "clarification":{"question":"...","suggestions":["...","...","..."]},
+ "title":"short guide title",
+ "country":"country name",
+ "scopeNote":"one sentence on what this guide covers and key assumptions",
+ "summary":{"principles":["3-4 items"],"mistakes":["2-4 items"],"sensitive":["1-3 items"]},
+ "steps":[{"title":"...","summary":"one sentence","why":"1-2 sentences on cultural/practical reasoning","items":[{"type":"do"|"etiquette"|"careful","text":"...","confidence":"high"|"moderate"|"low","basis":"convention"|"formal"|"varies"|"context","note":"optional short qualification","key":true|false}]}],
+ "limitations":"one sentence on what this guide cannot account for"}`;
+
+const SAMPLE = {
+  title: 'A business dinner with Japanese clients',
+  country: 'Japan',
+  scopeNote: 'Assumes you are the guest at a dinner hosted by clients in a city such as Tokyo or Osaka. Company culture and individual hosts vary.',
+  summary: {
+    principles: ['Follow your hosts’ lead on seating, ordering and pace.', 'Treat business cards with care; they stand in for the person.', 'Wait for the first toast before drinking.'],
+    mistakes: ['Writing on or pocketing a business card carelessly during the meal.', 'Standing chopsticks upright in rice or passing food chopstick-to-chopstick.', 'Tipping staff.'],
+    sensitive: ['How much hierarchy shapes the evening depends heavily on the company and generation of the people present.', 'Whether to offer to pay is situational; a polite offer is usually declined.']
+  },
+  steps: [
+    { title: 'Before you go', summary: 'Confirm the details and prepare what you will bring.', why: 'Arriving well prepared signals that you take the relationship seriously, which matters in relationships built over time.',
+      items: [
+        { type: 'do', text: 'Bring plenty of business cards, ideally with a Japanese translation on the reverse.', confidence: 'high', basis: 'convention', key: true },
+        { type: 'do', text: 'Dress in conservative business attire unless told the dinner is casual.', confidence: 'high', basis: 'convention' },
+        { type: 'etiquette', text: 'A small, well-wrapped gift from your home region is a thoughtful gesture for the senior host.', confidence: 'moderate', basis: 'varies', note: 'Common in many companies but not expected everywhere; some firms have gift policies.' },
+        { type: 'careful', text: 'Wear socks without holes; you may remove shoes at a traditional restaurant.', confidence: 'high', basis: 'context' }
+      ] },
+    { title: 'Arriving and greeting', summary: 'Arrive on time and greet the most senior person first.', why: 'Punctuality is widely valued, and acknowledging seniority first is a common sign of respect in business settings.',
+      items: [
+        { type: 'do', text: 'Arrive a few minutes early; lateness without notice is noticed.', confidence: 'high', basis: 'convention', key: true },
+        { type: 'etiquette', text: 'Return a bow with a slight bow; a handshake is also common with foreign guests, so follow what is offered.', confidence: 'high', basis: 'convention' },
+        { type: 'careful', text: 'Avoid using first names unless invited; use family name plus “-san”.', confidence: 'high', basis: 'convention' },
+        { type: 'careful', text: 'Exaggerated deep bows can feel awkward from a visitor.', confidence: 'low', basis: 'context', note: 'Reactions vary; some hosts appreciate the effort, others find it unnecessary.' }
+      ] },
+    { title: 'Exchanging business cards', summary: 'Give and receive cards deliberately, with both hands.', why: 'The card exchange (meishi kōkan) is a formal ritual in Japanese business; how you handle a card reflects how you regard its owner.',
+      items: [
+        { type: 'do', text: 'Offer your card with both hands, text facing the recipient.', confidence: 'high', basis: 'formal', key: true },
+        { type: 'do', text: 'Take a moment to read a card you receive, then place it on the table in front of you during the meal.', confidence: 'high', basis: 'formal' },
+        { type: 'careful', text: 'Never write on a card or put it in a back pocket.', confidence: 'high', basis: 'convention' }
+      ] },
+    { title: 'Seating, drinks and the toast', summary: 'Let your hosts seat you and wait for the toast.', why: 'Seating often reflects seniority, with the guest of honour placed farthest from the door. Starting together marks the beginning of the meal.',
+      items: [
+        { type: 'do', text: 'Wait to be shown your seat rather than choosing one.', confidence: 'high', basis: 'convention', key: true },
+        { type: 'etiquette', text: 'Wait for “kanpai” before drinking.', confidence: 'high', basis: 'convention' },
+        { type: 'etiquette', text: 'Pour drinks for others and let them pour yours rather than filling your own glass.', confidence: 'moderate', basis: 'varies', note: 'Strongly observed at traditional dinners; looser in younger or international teams.' },
+        { type: 'careful', text: 'If you don’t want more alcohol, leave your glass partly full; declining entirely is acceptable.', confidence: 'high', basis: 'convention' }
+      ] },
+    { title: 'Eating and conversation', summary: 'Use chopsticks with care and keep conversation light.', why: 'Some chopstick gestures are associated with funeral rites, and dinners are often for building rapport rather than negotiating.',
+      items: [
+        { type: 'careful', text: 'Don’t stand chopsticks upright in rice or pass food from chopstick to chopstick.', confidence: 'high', basis: 'convention', key: true },
+        { type: 'do', text: 'Say “itadakimasu” before eating and “gochisōsama deshita” afterwards.', confidence: 'high', basis: 'convention' },
+        { type: 'etiquette', text: 'Leave detailed business talk unless your hosts bring it up.', confidence: 'moderate', basis: 'context', note: 'Some hosts do discuss business at dinner; follow their lead.' }
+      ] },
+    { title: 'The bill and departing', summary: 'Let the hosts settle the bill and thank them twice.', why: 'The host usually pays as part of hospitality, and follow-up thanks reinforces the relationship.',
+      items: [
+        { type: 'careful', text: 'Don’t tip; it is not customary and can cause confusion.', confidence: 'high', basis: 'convention' },
+        { type: 'etiquette', text: 'Make one polite offer to contribute, then accept graciously when declined.', confidence: 'moderate', basis: 'context', note: 'Depends on who invited whom; if you invited them, you are expected to pay.' },
+        { type: 'do', text: 'Thank your hosts at the end and again by email the next day.', confidence: 'high', basis: 'convention', key: true }
+      ] }
+  ],
+  limitations: 'Practices differ across companies, industries, regions and generations; your hosts’ behaviour is the best guide on the night.'
+};
+
+function normalize(d, fallbackCountry) {
+  const pick = (v, set, def) => (set.includes(String(v || '').toLowerCase()) ? String(v).toLowerCase() : def);
+  const strs = a => (Array.isArray(a) ? a.filter(x => typeof x === 'string' && x.trim()) : []);
+  const steps = (Array.isArray(d.steps) ? d.steps : []).filter(s => s && s.title).map((s, i) => ({
+    title: String(s.title), summary: String(s.summary || ''), why: String(s.why || ''),
+    items: (Array.isArray(s.items) ? s.items : []).filter(it => it && it.text).map((it, j) => ({
+      id: `s${i}-${j}`, text: String(it.text),
+      type: pick(it.type, ['do', 'etiquette', 'careful'], 'do'),
+      confidence: pick(it.confidence, ['high', 'moderate', 'low'], 'moderate'),
+      basis: pick(it.basis, ['convention', 'formal', 'varies', 'context'], ''),
+      note: it.note ? String(it.note) : '', key: !!it.key
+    }))
+  })).filter(s => s.items.length);
+  if (!steps.length) throw new Error('empty');
+  const sm = d.summary || {};
+  return { title: String(d.title || 'Your etiquette guide'), country: String(d.country || fallbackCountry), scopeNote: String(d.scopeNote || ''),
+    summary: { principles: strs(sm.principles), mistakes: strs(sm.mistakes), sensitive: strs(sm.sensitive) },
+    steps, limitations: String(d.limitations || '') };
+}
+
+function parseJSON(text) {
+  const a = text.indexOf('{'), b = text.lastIndexOf('}');
+  if (a < 0 || b < a) throw new Error('parse');
+  return JSON.parse(text.slice(a, b + 1));
+}
+
+class Component extends DCLogic {
+  state = { stage: 'input', activity: '', country: '', errors: {}, guide: null, isSample: false, active: 0, checked: {}, closed: {}, whyOpen: true, lowOpen: true,
+    vw: typeof window !== 'undefined' ? window.innerWidth : 1200, errorMsg: '', clarify: null, clarifyAnswer: '', clarifyErr: '', loadPhase: 0, saved: null, lastExtra: '' };
+
+  componentDidMount() {
+    this.onResize = () => this.setState({ vw: window.innerWidth });
+    window.addEventListener('resize', this.onResize);
+    try {
+      const s = JSON.parse(localStorage.getItem(STORE) || 'null');
+      if (s && s.guide) this.setState({ stage: 'results', guide: normalize(s.guide, s.country || ''), checked: s.checked || {}, active: Math.min(s.active || 0, s.guide.steps.length - 1), activity: s.activity || '', country: s.country || '', isSample: !!s.isSample, saved: s });
+    } catch (e) {}
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this.onResize); clearInterval(this.timer); }
+  componentDidUpdate(_, prev) {
+    const s = this.state;
+    if (s.guide && (s.guide !== prev.guide || s.checked !== prev.checked || s.active !== prev.active)) {
+      const rec = { guide: s.guide, checked: s.checked, active: s.active, activity: s.activity, country: s.country, isSample: s.isSample };
+      try { localStorage.setItem(STORE, JSON.stringify(rec)); } catch (e) {}
+    }
+    if (s.stage !== prev.stage) window.scrollTo(0, 0);
+  }
+
+  go(stage, extra) { this.setState({ stage, ...extra }); }
+
+  validate() {
+    const errors = {};
+    const a = this.state.activity.trim(), c = this.state.country.trim();
+    if (!a) errors.activity = 'Tell us what you’re planning — a sentence is enough.';
+    else if (a.length < 8) errors.activity = 'Add a few more words so the guide can be specific, e.g. who you’ll be with and the setting.';
+    if (!c) errors.country = 'Which country will this take place in?';
+    this.setState({ errors });
+    return !Object.keys(errors).length;
+  }
+
+  async generate(extra) {
+    const { activity, country } = this.state;
+    this.setState({ stage: 'loading', loadPhase: 0, errorMsg: '', lastExtra: extra || '' });
+    clearInterval(this.timer);
+    this.timer = setInterval(() => this.setState(s => ({ loadPhase: Math.min(s.loadPhase + 1, PHASES.length - 1) })), 3500);
+    const user = `Activity: ${activity.trim()}\nCountry: ${country.trim()}` + (extra ? `\nAdditional detail from the user: ${extra}\nDo not ask for clarification again; produce the guide.` : '');
+    const model = this.props.model === 'haiku' ? 'claude-haiku-4-5' : 'claude-sonnet-4-5';
+    const body = { model, max_tokens: 7000, system: SYSTEM, messages: [{ role: 'user', content: user }] };
+    try {
+      let text;
+      const attempts = [
+        () => window.claude.complete(body),
+        () => { const { model: _m, ...rest } = body; return window.claude.complete(rest); },
+        () => window.claude.complete(SYSTEM + '\n\n' + user)
+      ];
+      let lastErr;
+      for (const run of attempts) {
+        try { const r = await run(); text = typeof r === 'string' ? r : (r && (r.completion || r.text || (r.content && r.content[0] && r.content[0].text))) || ''; if (text) break; }
+        catch (err) { lastErr = err; }
+      }
+      if (!text) throw lastErr || new Error('nores');
+      const data = parseJSON(text);
+      if (data.status === 'clarify' && !extra && data.clarification && data.clarification.question) {
+        this.go('clarify', { clarify: { question: data.clarification.question, suggestions: (data.clarification.suggestions || []).slice(0, 4) }, clarifyAnswer: '', clarifyErr: '' });
+      } else {
+        const guide = normalize(data, country.trim());
+        this.go('results', { guide, isSample: false, active: 0, checked: {}, closed: {}, whyOpen: true, lowOpen: true });
+      }
+    } catch (e) {
+      const msg = !window.claude ? 'The guidance service isn’t available in this view.' :
+        (e && e.message === 'parse') || e instanceof SyntaxError ? 'The response came back in an unexpected format. Trying again usually fixes this.' :
+        e && e.message === 'empty' ? 'We couldn’t find reliable, specific guidance for this activity. Try adding detail about the setting or who you’ll be with.' :
+        'Something went wrong while generating your guide. Check your connection and try again.';
+      this.go('error', { errorMsg: msg });
+    } finally { clearInterval(this.timer); }
+  }
+
+  toggle(id) { this.setState(s => ({ checked: { ...s.checked, [id]: !s.checked[id] } })); }
+  select(i) {
+    this.setState({ active: i });
+    const el = document.getElementById('wm-step');
+    if (el && this.state.vw < 900) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 12, behavior: 'smooth' });
+  }
+
+  mapItem(it) {
+    const c = !!this.state.checked[it.id];
+    const showBasis = this.props.showBasis ?? true;
+    return { ...it, checked: c, toggle: () => this.toggle(it.id), aria: (c ? 'Unmark: ' : 'Mark done: ') + it.text,
+      mark: c ? '✓' : '', boxBg: c ? '#526B55' : '#FFFFFF', boxBorder: c ? '#526B55' : '#A9B6A5',
+      textColor: c ? '#70776E' : '#303830', deco: c ? 'line-through' : 'none',
+      isHigh: it.confidence === 'high', isModerate: it.confidence === 'moderate', isLow: it.confidence === 'low',
+      confTip: CONF_TIP[it.confidence] + (it.note ? ' ' + it.note : ''), hasNote: !!it.note && it.confidence !== 'high',
+      basisLabel: BASIS[it.basis] || '', hasBasis: showBasis && !!BASIS[it.basis], typeLabel: TYPES[it.type] };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const wide = s.vw >= 900;
+    const tl = this.props.timeline || 'auto';
+    const horizontal = tl === 'horizontal' || (tl === 'auto' && s.vw >= 720);
+    const set = (k) => (e) => this.setState({ [k]: e.target.value, errors: { ...s.errors, [k]: undefined } });
+    const base = {
+      isInput: s.stage === 'input', isLoading: s.stage === 'loading', isClarify: s.stage === 'clarify', isError: s.stage === 'error', isResults: s.stage === 'results' && !!s.guide,
+      activity: s.activity, country: s.country,
+      onActivity: set('activity'), onCountry: set('country'),
+      errActivity: s.errors.activity || '', errCountry: s.errors.country || '',
+      activityInvalid: !!s.errors.activity, countryInvalid: !!s.errors.country,
+      activityBorder: s.errors.activity ? '#9A4F37' : '#CFD8CA', countryBorder: s.errors.country ? '#9A4F37' : '#CFD8CA',
+      examples: EXAMPLES.map(ex => ({ label: ex.label, use: () => this.setState({ activity: ex.activity, country: ex.country, errors: {} }) })),
+      submit: (e) => { e.preventDefault(); if (this.validate()) this.generate(); },
+      loadSample: () => this.go('results', { guide: normalize(SAMPLE, 'Japan'), isSample: true, active: 0, checked: {}, closed: {}, activity: 'Attending a business dinner with Japanese clients', country: 'Japan' }),
+      canResume: !!s.saved && !s.guide, resume: () => this.go('results'),
+      goHome: () => this.go('input'),
+      newGuide: () => this.go('input', { activity: '', country: '', errors: {} }),
+      backToInput: () => this.go('input'),
+      retry: () => this.generate(s.lastExtra),
+      phases: PHASES.map((label, i) => {
+        const done = i < s.loadPhase, cur = i === s.loadPhase;
+        return { label, mark: done ? '✓' : '', ring: done || cur ? '#526B55' : '#CFD8CA', fill: done ? '#526B55' : 'transparent', color: done || cur ? '#303830' : '#70776E', lineVis: i < PHASES.length - 1 ? 'visible' : 'hidden',
+          pulse: cur ? React.createElement('span', { style: { width: 8, height: 8, borderRadius: '50%', background: '#526B55', animation: 'wm-pulse 1.4s ease-in-out infinite' } }) : null };
+      }),
+      clarifyQuestion: s.clarify ? s.clarify.question : '',
+      clarifySuggestions: (s.clarify ? s.clarify.suggestions : []).map(label => ({ label, use: () => this.setState({ clarifyAnswer: label, clarifyErr: '' }) })),
+      clarifyAnswer: s.clarifyAnswer, onClarify: (e) => this.setState({ clarifyAnswer: e.target.value, clarifyErr: '' }), errClarify: s.clarifyErr,
+      submitClarify: (e) => { e.preventDefault(); const a = s.clarifyAnswer.trim(); if (!a) return this.setState({ clarifyErr: 'Add a short answer, or pick one of the suggestions.' }); this.setState({ activity: s.activity.trim() + ' — ' + a }); this.generate(a); },
+      errorMsg: s.errorMsg
+    };
+    if (!s.guide) return base;
+
+    const g = s.guide, n = g.steps.length, active = Math.min(s.active, n - 1);
+    const all = g.steps.flatMap(st => st.items);
+    const doneAll = all.filter(it => s.checked[it.id]).length;
+    const pct = all.length ? Math.round(doneAll / all.length * 100) : 0;
+    const stepStats = g.steps.map(st => { const d = st.items.filter(it => s.checked[it.id]).length; return { d, t: st.items.length }; });
+
+    const checkpoints = g.steps.map((st, i) => {
+      const isA = i === active, isD = stepStats[i].d === stepStats[i].t;
+      return { title: st.title, select: () => this.select(i), ariaCurrent: isA ? 'step' : undefined,
+        aria: `Step ${i + 1}: ${st.title}, ${stepStats[i].d} of ${stepStats[i].t} done`,
+        mark: isD ? '✓' : String(i + 1), progress: `${stepStats[i].d}/${stepStats[i].t}`,
+        bg: isD ? '#526B55' : isA ? '#FCFBF7' : '#F8F7F2', fg: isD ? '#FFFFFF' : isA ? '#526B55' : '#5F665D',
+        border: isD || isA ? '#526B55' : '#CFD8CA', shadow: isA ? '0 0 0 5px #E8EDE4' : 'none',
+        weight: isA ? 600 : 500, labelColor: isA ? '#303830' : '#5F665D', rowBg: isA ? '#E8EDE4' : 'transparent',
+        lineVis: 'hidden', leftLine: i === 0 ? 'transparent' : '#DDE3D8', rightLine: i === n - 1 ? 'transparent' : '#DDE3D8',
+        vLineVis: i < n - 1 ? 'visible' : 'hidden' };
+    });
+
+    const st = g.steps[active];
+    const sd = stepStats[active];
+    const sections = Object.keys(TYPES).map(k => {
+      const items = st.items.filter(it => it.type === k && it.confidence !== 'low').map(it => this.mapItem(it));
+      const key = active + ':' + k, open = !s.closed[key];
+      return { label: TYPES[k], items, open, countText: `${items.filter(x => x.checked).length}/${items.length}`,
+        chevron: open ? 'rotate(180deg)' : 'none', toggle: () => this.setState(p => ({ closed: { ...p.closed, [key]: !p.closed[key] } })) };
+    }).filter(x => x.items.length);
+    const lowItems = st.items.filter(it => it.confidence === 'low').map(it => this.mapItem(it));
+
+    let keys = [];
+    g.steps.forEach((x, i) => {
+      const k = x.items.filter(it => it.key);
+      const use = k.length ? k : x.items.filter(it => it.confidence === 'high').slice(0, 1);
+      use.forEach(it => keys.push({ ...this.mapItem(it), stepNum: i + 1, go: () => this.select(i) }));
+    });
+
+    return { ...base,
+      guide: g, horizontal, vertical: !horizontal, trackMin: n * 130 + 'px',
+      gridCols: wide ? 'minmax(0,1fr) 340px' : 'minmax(0,1fr)', asidePos: wide ? 'sticky' : 'static',
+      overallPct: pct, overallWidth: pct + '%', overallText: `${doneAll} of ${all.length} · ${pct}%`, allDone: all.length > 0 && doneAll === all.length,
+      checkpoints, stepNum: active + 1, stepCount: n,
+      step: { ...st, progress: `${sd.d} of ${sd.t} checked`, width: (sd.t ? Math.round(sd.d / sd.t * 100) : 0) + '%' },
+      sections, lowItems, hasLow: lowItems.length > 0, lowCount: `${lowItems.filter(x => x.checked).length}/${lowItems.length}`,
+      lowOpen: s.lowOpen, toggleLow: () => this.setState(p => ({ lowOpen: !p.lowOpen })), lowChevron: s.lowOpen ? 'rotate(180deg)' : 'none',
+      whyOpen: s.whyOpen, toggleWhy: () => this.setState(p => ({ whyOpen: !p.whyOpen })), whyChevron: s.whyOpen ? 'rotate(180deg)' : 'none',
+      isFirst: active === 0, prevOpacity: active === 0 ? 0.4 : 1,
+      prev: () => active > 0 && this.select(active - 1),
+      next: () => (active < n - 1 ? this.select(active + 1) : window.scrollTo({ top: 0, behavior: 'smooth' })),
+      nextLabel: active < n - 1 ? 'Next step →' : 'Back to overview ↑',
+      hasPrinciples: g.summary.principles.length > 0, hasMistakes: g.summary.mistakes.length > 0, hasSensitive: g.summary.sensitive.length > 0,
+      keyActions: keys,
+      provenance: s.isSample ? 'Sample guide written for illustration. It has not been independently verified.' : 'Generated by AI from general knowledge. Not independently verified, and no sources are cited. Check anything important with someone familiar with the setting.',
+      resetChecks: () => this.setState({ checked: {} })
+    };
+  }
+}
+</script>
+</body>
+</html>

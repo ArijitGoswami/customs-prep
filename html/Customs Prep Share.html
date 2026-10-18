@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Customs Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#F8F7F2;color:#303830;font-family:Figtree,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:#526B55}a:hover{color:#303830}
+button{font-family:inherit;cursor:pointer}
+button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid #526B55;outline-offset:2px}
+.serif{font-family:Newsreader,Georgia,serif;font-weight:400}
+.eyebrow{margin:0 0 10px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#526B55}
+.muted{color:#5F665D}
+.wrap{max-width:1200px;margin:0 auto;padding:20px 24px}
+.narrow{max-width:680px;margin:0 auto;padding:32px 24px 80px}
+.card{background:#FCFBF7;border:1px solid #DDE3D8;border-radius:20px;box-shadow:0 1px 2px rgba(48,56,48,.04),0 8px 24px rgba(48,56,48,.04)}
+.btn{background:#526B55;color:#fff;border:none;border-radius:12px;padding:14px 20px;font-size:16px;font-weight:600}
+.btn:hover{background:#435A46}
+.btn2{background:none;border:1px solid #CFD8CA;color:#303830;border-radius:12px;padding:12px 18px;font-size:15px;font-weight:600}
+.btn2:hover{background:#E8EDE4}
+.link{background:none;border:none;padding:0;color:#526B55;font-size:14px;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.chip{background:#E8EDE4;border:1px solid transparent;color:#303830;border-radius:999px;padding:6px 12px;font-size:13px}
+.chip:hover{border-color:#879B83}
+.field{display:flex;flex-direction:column;gap:8px}
+.field label{font-weight:600;font-size:15px}
+.field textarea,.field input{width:100%;font:inherit;font-size:16px;color:#303830;background:#fff;border:1.5px solid #CFD8CA;border-radius:12px;padding:13px 16px}
+.field textarea{resize:vertical;line-height:1.5}
+.field .bad{border-color:#9A4F37}
+.err{margin:0;font-size:14px;color:#9A4F37}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.bar{height:8px;border-radius:999px;background:#E8EDE4;overflow:hidden}
+.bar>div{height:100%;background:#526B55;border-radius:999px;transition:width .3s}
+.tl{list-style:none;margin:0;padding:4px 2px 8px;display:flex;overflow-x:auto}
+.tl li{flex:1 1 0;min-width:120px;position:relative;display:flex;justify-content:center}
+.tl li:before{content:"";position:absolute;top:21px;left:0;right:0;height:2px;background:#DDE3D8}
+.tl li:first-child:before{left:50%}.tl li:last-child:before{right:50%}
+.tl li:only-child:before{display:none}
+.tl button{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:none;padding:0 6px;color:#303830;width:100%}
+.dot{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;background:#F8F7F2;color:#5F665D;border:2px solid #CFD8CA;transition:all .2s;flex:none}
+.dot.active{background:#FCFBF7;color:#526B55;border-color:#526B55;box-shadow:0 0 0 5px #E8EDE4}
+.dot.done{background:#526B55;color:#fff;border-color:#526B55}
+.tl .lbl{font-size:13px;line-height:1.3;text-align:center;color:#5F665D;text-wrap:balance}
+.tl .active-l{color:#303830;font-weight:600}
+.vl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.vl li{position:relative}
+.vl li:not(:last-child):after{content:"";position:absolute;left:19px;top:44px;bottom:-4px;width:2px;background:#DDE3D8}
+.vl button{display:flex;align-items:center;gap:14px;width:100%;min-height:52px;background:transparent;border:none;border-radius:12px;padding:4px 10px 4px 0;color:#303830;text-align:left;font-size:15px}
+.vl button.cur{background:#E8EDE4;font-weight:600}
+.vl .dot{width:40px;height:40px;font-size:14px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}
+.grid aside{position:sticky;top:16px;display:flex;flex-direction:column;gap:16px;min-width:0}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}.grid aside{position:static}}
+.step{border-radius:24px;padding:clamp(20px,3vw,32px);min-width:0}
+.acc{border:1px solid #E1E6DC;border-radius:16px;background:#fff;overflow:hidden}
+.acc>button{width:100%;display:flex;align-items:center;gap:12px;background:none;border:none;padding:16px 18px;color:#303830;text-align:left}
+.acc>button .t{flex:1;font-weight:600;font-size:16px}
+.chev{display:inline-block;transition:transform .2s;color:#526B55;font-size:14px}
+.open .chev{transform:rotate(180deg)}
+.acc ul{list-style:none;margin:0;padding:0 18px 10px;display:flex;flex-direction:column}
+.item{display:flex;gap:14px;padding:12px 0;border-top:1px solid #EEF1EA}
+.box{flex:none;width:26px;height:26px;margin-top:1px;border-radius:8px;border:2px solid #A9B6A5;background:#fff;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;padding:0}
+.box.on{background:#526B55;border-color:#526B55}
+.item .txt.on{color:#70776E;text-decoration:line-through}
+.badge{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-size:12px;font-weight:600;border-radius:999px;padding:3px 10px 3px 8px;cursor:help}
+.b-high{color:#3F5642;background:#E8EDE4}.b-high i{width:8px;height:8px;border-radius:50%;background:#526B55}
+.b-moderate{color:#6E5422;background:#F3ECDD}.b-moderate i{width:8px;height:8px;border-radius:50%;border:1.5px solid #8A6A2E}
+.b-low{color:#86422D;background:#F5E6DF}.b-low i{width:7px;height:7px;transform:rotate(45deg);border:1.5px solid #9A4F37}
+.tag{font-size:12px;color:#5F665D;border:1px solid #DDE3D8;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.note{margin:0;font-size:14px;color:#5F665D}
+.low{border:1.5px dashed #D2B3A6;background:#FBF6F2}
+.low .item{border-top-color:#EFE2DA}
+.low .chev{color:#9A4F37}
+.why{border:none;background:#E8EDE4}
+.why p{margin:0;padding:0 18px 18px;color:#3A433A}
+aside h3{margin:0 0 8px;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+aside ul.b{margin:0 0 18px;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.legend{display:flex;gap:10px;align-items:baseline;font-size:14px}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:.35}}
+.pulse{width:8px;height:8px;border-radius:50%;background:#526B55;animation:pulse 1.4s ease-in-out infinite}
+p,li,h1,h2{text-wrap:pretty}
+</style>
+</head>
+<body>
+<header class="wrap" style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+  <button data-a="home" style="display:flex;align-items:center;gap:10px;background:none;border:none;padding:4px;color:#303830">
+    <span style="width:22px;height:22px;border-radius:50%;border:2px solid #526B55;display:flex;align-items:center;justify-content:center"><span style="width:8px;height:8px;border-radius:50%;background:#526B55"></span></span>
+    <span class="serif" style="font-size:22px;letter-spacing:-.01em">Customs Prep</span>
+  </button>
+  <button id="newBtn" data-a="new" class="btn2" style="display:none;border-radius:999px;padding:9px 16px;font-size:14px;background:#FCFBF7">+ New guide</button>
+</header>
+<div id="app"></div>
+<noscript><p style="text-align:center;padding:40px">Please enable JavaScript to use Customs Prep.</p></noscript>
+<script>
+(function(){
+var STORE='customsprep:v1';
+// Paste your deployed proxy URL here (see customs-prep-worker.js). Keeps your API key off the page.
+var API_ENDPOINT='';
+var KEY_STORE='customsprep:apikey';
+var MODEL='claude-sonnet-4-5';
+var BASIS={convention:'Widely observed',formal:'Formal protocol',varies:'Varies by region or group',context:'Context-dependent'};
+var TYPES={'do':'What to do',etiquette:'Etiquette to follow',careful:'What to be careful about'};
+var TIP={high:'High confidence: widely documented and consistently observed in this context.',moderate:'Moderate confidence: common, but depends on the setting, region or people involved.',low:'Low confidence: limited evidence or highly variable practice.'};
+var PHASES=['Reading your activity','Breaking it into steps','Checking cultural context','Weighing confidence for each tip'];
+var EXAMPLES=[
+ {label:'Business dinner · Japan',activity:'Attending a business dinner with Japanese clients',country:'Japan'},
+ {label:'Temple visit · India',activity:'Visiting a Hindu temple for the first time as a tourist',country:'India'},
+ {label:"Partner's family · France",activity:"Meeting my partner's parents for Sunday lunch at their home",country:'France'}];
+var SYSTEM='You are a careful cross-cultural etiquette advisor. Given an activity and a country, produce a practical step-by-step preparation guide.\n\nRules:\n- Decompose the activity into 4-8 chronological, independently actionable steps.\n- For each step give 2-4 items per type: "do", "etiquette", "careful". Skip types with nothing useful.\n- Each item gets its own confidence: "high" (widely documented, consistently observed), "moderate" (common but setting/region/generation dependent; add a short note), "low" (thin evidence or highly variable; note MUST explain the uncertainty). Base confidence on evidence strength, not fluency.\n- Each item gets a basis: "convention", "formal" (formal rule, protocol, legal/institutional), "varies" (by region, community, generation, person), "context" (situational).\n- Never invent norms or present stereotypes as fact. Do not treat the country as homogeneous. Omit anything you are not reasonably confident is real. No citations or URLs.\n- Be specific and practical; avoid generic advice.\n- Mark 1 item per step as "key": true.\n- Plain, concise language. Not preachy.\n- If the activity is too vague for useful specific guidance, return status "clarify" with one focused question and 3 short suggested answers.\n\nRespond with ONLY valid JSON, no prose, matching:\n{"status":"ok"|"clarify","clarification":{"question":"...","suggestions":["...","...","..."]},"title":"short guide title","country":"country name","scopeNote":"one sentence on scope and assumptions","summary":{"principles":["3-4"],"mistakes":["2-4"],"sensitive":["1-3"]},"steps":[{"title":"...","summary":"one sentence","why":"1-2 sentences","items":[{"type":"do"|"etiquette"|"careful","text":"...","confidence":"high"|"moderate"|"low","basis":"convention"|"formal"|"varies"|"context","note":"optional","key":true|false}]}],"limitations":"one sentence"}';
+var SAMPLE={title:'A business dinner with Japanese clients',country:'Japan',scopeNote:'Assumes you are the guest at a dinner hosted by clients in a city such as Tokyo or Osaka. Company culture and individual hosts vary.',
+summary:{principles:['Follow your hosts’ lead on seating, ordering and pace.','Treat business cards with care; they stand in for the person.','Wait for the first toast before drinking.'],mistakes:['Writing on or pocketing a business card carelessly during the meal.','Standing chopsticks upright in rice or passing food chopstick-to-chopstick.','Tipping staff.'],sensitive:['How much hierarchy shapes the evening depends heavily on the company and generation of the people present.','Whether to offer to pay is situational; a polite offer is usually declined.']},
+steps:[
+{title:'Before you go',summary:'Confirm the details and prepare what you will bring.',why:'Arriving well prepared signals that you take the relationship seriously, which matters in relationships built over time.',items:[
+{type:'do',text:'Bring plenty of business cards, ideally with a Japanese translation on the reverse.',confidence:'high',basis:'convention',key:true},
+{type:'do',text:'Dress in conservative business attire unless told the dinner is casual.',confidence:'high',basis:'convention'},
+{type:'etiquette',text:'A small, well-wrapped gift from your home region is a thoughtful gesture for the senior host.',confidence:'moderate',basis:'varies',note:'Common in many companies but not expected everywhere; some firms have gift policies.'},
+{type:'careful',text:'Wear socks without holes; you may remove shoes at a traditional restaurant.',confidence:'high',basis:'context'}]},
+{title:'Arriving and greeting',summary:'Arrive on time and greet the most senior person first.',why:'Punctuality is widely valued, and acknowledging seniority first is a common sign of respect in business settings.',items:[
+{type:'do',text:'Arrive a few minutes early; lateness without notice is noticed.',confidence:'high',basis:'convention',key:true},
+{type:'etiquette',text:'Return a bow with a slight bow; a handshake is also common with foreign guests, so follow what is offered.',confidence:'high',basis:'convention'},
+{type:'careful',text:'Avoid using first names unless invited; use family name plus “-san”.',confidence:'high',basis:'convention'},
+{type:'careful',text:'Exaggerated deep bows can feel awkward from a visitor.',confidence:'low',basis:'context',note:'Reactions vary; some hosts appreciate the effort, others find it unnecessary.'}]},
+{title:'Exchanging business cards',summary:'Give and receive cards deliberately, with both hands.',why:'The card exchange (meishi kōkan) is a formal ritual in Japanese business; how you handle a card reflects how you regard its owner.',items:[
+{type:'do',text:'Offer your card with both hands, text facing the recipient.',confidence:'high',basis:'formal',key:true},
+{type:'do',text:'Take a moment to read a card you receive, then place it on the table in front of you during the meal.',confidence:'high',basis:'formal'},
+{type:'careful',text:'Never write on a card or put it in a back pocket.',confidence:'high',basis:'convention'}]},
+{title:'Seating, drinks and the toast',summary:'Let your hosts seat you and wait for the toast.',why:'Seating often reflects seniority, with the guest of honour placed farthest from the door. Starting together marks the beginning of the meal.',items:[
+{type:'do',text:'Wait to be shown your seat rather than choosing one.',confidence:'high',basis:'convention',key:true},
+{type:'etiquette',text:'Wait for “kanpai” before drinking.',confidence:'high',basis:'convention'},
+{type:'etiquette',text:'Pour drinks for others and let them pour yours rather than filling your own glass.',confidence:'moderate',basis:'varies',note:'Strongly observed at traditional dinners; looser in younger or international teams.'},
+{type:'careful',text:'If you don’t want more alcohol, leave your glass partly full; declining entirely is acceptable.',confidence:'high',basis:'convention'}]},
+{title:'Eating and conversation',summary:'Use chopsticks with care and keep conversation light.',why:'Some chopstick gestures are associated with funeral rites, and dinners are often for building rapport rather than negotiating.',items:[
+{type:'careful',text:'Don’t stand chopsticks upright in rice or pass food from chopstick to chopstick.',confidence:'high',basis:'convention',key:true},
+{type:'do',text:'Say “itadakimasu” before eating and “gochisōsama deshita” afterwards.',confidence:'high',basis:'convention'},
+{type:'etiquette',text:'Leave detailed business talk unless your hosts bring it up.',confidence:'moderate',basis:'context',note:'Some hosts do discuss business at dinner; follow their lead.'}]},
+{title:'The bill and departing',summary:'Let the hosts settle the bill and thank them twice.',why:'The host usually pays as part of hospitality, and follow-up thanks reinforces the relationship.',items:[
+{type:'careful',text:'Don’t tip; it is not customary and can cause confusion.',confidence:'high',basis:'convention'},
+{type:'etiquette',text:'Make one polite offer to contribute, then accept graciously when declined.',confidence:'moderate',basis:'context',note:'Depends on who invited whom; if you invited them, you are expected to pay.'},
+{type:'do',text:'Thank your hosts at the end and again by email the next day.',confidence:'high',basis:'convention',key:true}]}],
+limitations:'Practices differ across companies, industries, regions and generations; your hosts’ behaviour is the best guide on the night.'};
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function pick(v,set,d){v=String(v||'').toLowerCase();return set.indexOf(v)>=0?v:d;}
+function strs(a){return Array.isArray(a)?a.filter(function(x){return typeof x==='string'&&x.trim();}):[];}
+function normalize(d,fc){
+ var steps=(Array.isArray(d.steps)?d.steps:[]).filter(function(s){return s&&s.title;}).map(function(s,i){
+  return {title:String(s.title),summary:String(s.summary||''),why:String(s.why||''),items:(Array.isArray(s.items)?s.items:[]).filter(function(it){return it&&it.text;}).map(function(it,j){
+   return {id:'s'+i+'-'+j,text:String(it.text),type:pick(it.type,['do','etiquette','careful'],'do'),confidence:pick(it.confidence,['high','moderate','low'],'moderate'),basis:pick(it.basis,['convention','formal','varies','context'],''),note:it.note?String(it.note):'',key:!!it.key};})};
+ }).filter(function(s){return s.items.length;});
+ if(!steps.length)throw new Error('empty');
+ var sm=d.summary||{};
+ return {title:String(d.title||'Your etiquette guide'),country:String(d.country||fc),scopeNote:String(d.scopeNote||''),summary:{principles:strs(sm.principles),mistakes:strs(sm.mistakes),sensitive:strs(sm.sensitive)},steps:steps,limitations:String(d.limitations||'')};
+}
+function parseJSON(t){var a=t.indexOf('{'),b=t.lastIndexOf('}');if(a<0||b<a)throw new Error('parse');return JSON.parse(t.slice(a,b+1));}
+function textOf(r){if(typeof r==='string')return r;if(!r)return '';return r.completion||r.text||(r.content&&r.content[0]&&r.content[0].text)||'';}
+
+var S={stage:'input',activity:'',country:'',errors:{},guide:null,isSample:false,active:0,checked:{},closed:{},whyOpen:true,lowOpen:true,errorMsg:'',clarify:null,clarifyAnswer:'',clarifyErr:'',phase:0,saved:false,lastExtra:''};
+try{var sv=JSON.parse(localStorage.getItem(STORE)||'null');if(sv&&sv.guide){var g=normalize(sv.guide,sv.country||'');S.stage='results';S.guide=g;S.checked=sv.checked||{};S.active=Math.min(sv.active||0,g.steps.length-1);S.activity=sv.activity||'';S.country=sv.country||'';S.isSample=!!sv.isSample;S.saved=true;}}catch(e){}
+
+function save(){if(!S.guide)return;try{localStorage.setItem(STORE,JSON.stringify({guide:S.guide,checked:S.checked,active:S.active,activity:S.activity,country:S.country,isSample:S.isSample}));}catch(e){}}
+function set(p,keepScroll){var prev=S.stage;for(var k in p)S[k]=p[k];render();save();if(S.stage!==prev&&!keepScroll)window.scrollTo(0,0);}
+var app=document.getElementById('app');
+
+function vInput(){
+ var e=S.errors;
+ return '<main class="narrow">'+
+ '<p class="eyebrow">Etiquette guide</p>'+
+ '<h1 class="serif" style="margin:0 0 14px;font-size:clamp(36px,6vw,52px);line-height:1.08;letter-spacing:-.02em;text-wrap:balance">Know the customs before you arrive.</h1>'+
+ '<p class="muted" style="margin:0 0 32px;font-size:17px;max-width:540px">Describe what you\'re planning and where. You\'ll get a step-by-step guide with what to do, what to watch for, and how sure each piece of advice is.</p>'+
+ '<form id="f" novalidate class="card" style="padding:28px;display:flex;flex-direction:column;gap:22px">'+
+ '<div class="field"><label for="act">Describe your activity</label><textarea id="act" rows="4" aria-invalid="'+!!e.activity+'" class="'+(e.activity?'bad':'')+'" placeholder="What are you planning to do? For example, attend a business dinner, visit a place of worship, negotiate with a client, or meet your partner\'s family.">'+esc(S.activity)+'</textarea>'+(e.activity?'<p role="alert" class="err">'+esc(e.activity)+'</p>':'')+'</div>'+
+ '<div class="field"><label for="cty">Country in context</label><input id="cty" type="text" autocomplete="country-name" aria-invalid="'+!!e.country+'" class="'+(e.country?'bad':'')+'" value="'+esc(S.country)+'" placeholder="Enter the country, e.g., Japan, India, France.">'+(e.country?'<p role="alert" class="err">'+esc(e.country)+'</p>':'')+'</div>'+
+ '<div class="row"><span class="muted" style="font-size:13px">Try</span>'+EXAMPLES.map(function(x,i){return '<button type="button" class="chip" data-a="ex" data-i="'+i+'">'+esc(x.label)+'</button>';}).join('')+'</div>'+
+ '<button type="submit" class="btn" style="padding:16px 20px">Explore the Etiquette <span aria-hidden="true">→</span></button>'+
+ '</form>'+
+ '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:20px;font-size:14px" class="muted"><span>Advice is AI-generated and labelled by confidence.</span><div style="display:flex;gap:16px">'+
+ (S.guide?'<button type="button" class="link" data-a="resume">Resume last guide</button>':'')+
+ '<button type="button" class="link" data-a="sample">View a sample guide</button></div></div></main>';
+}
+function vLoading(){
+ return '<main class="narrow" aria-live="polite" style="max-width:560px;padding-top:64px"><p class="eyebrow">'+esc(S.country)+'</p><h1 class="serif" style="margin:0 0 32px;font-size:34px;line-height:1.15">Preparing your guide</h1><ol style="list-style:none;margin:0;padding:0">'+
+ PHASES.map(function(l,i){var d=i<S.phase,c=i===S.phase;return '<li style="display:flex;gap:16px;align-items:flex-start"><div style="display:flex;flex-direction:column;align-items:center;width:20px"><span style="width:20px;height:20px;border-radius:50%;border:2px solid '+(d||c?'#526B55':'#CFD8CA')+';background:'+(d?'#526B55':'transparent')+';display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700">'+(d?'✓':c?'<span class="pulse"></span>':'')+'</span>'+(i<PHASES.length-1?'<span style="width:2px;height:28px;background:#DDE3D8"></span>':'')+'</div><span style="color:'+(d||c?'#303830':'#70776E')+'">'+l+'</span></li>';}).join('')+
+ '</ol><p class="muted" style="margin:24px 0 0;font-size:14px">This usually takes 20–40 seconds.</p></main>';
+}
+function vClarify(){
+ return '<main class="narrow" style="max-width:640px"><p class="eyebrow">One quick question</p><h1 class="serif" style="margin:0 0 12px;font-size:34px;line-height:1.15">'+esc(S.clarify.question)+'</h1><p class="muted" style="margin:0 0 24px">A little more detail helps avoid generic advice. You wrote: “'+esc(S.activity)+'” in '+esc(S.country)+'.</p>'+
+ '<form id="cf" class="card" style="padding:24px;display:flex;flex-direction:column;gap:16px"><div class="row">'+S.clarify.suggestions.map(function(s,i){return '<button type="button" class="chip" style="font-size:14px;padding:7px 14px" data-a="sug" data-i="'+i+'">'+esc(s)+'</button>';}).join('')+'</div>'+
+ '<div class="field"><label for="ca">Your answer</label><textarea id="ca" rows="3">'+esc(S.clarifyAnswer)+'</textarea></div>'+(S.clarifyErr?'<p role="alert" class="err">'+esc(S.clarifyErr)+'</p>':'')+
+ '<div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between"><button type="button" class="btn2" data-a="back">Edit activity</button><button type="submit" class="btn" style="font-size:15px;padding:12px 20px">Continue →</button></div></form></main>';
+}
+function vError(){
+ return '<main class="narrow" style="max-width:560px;padding-top:56px"><div role="alert" class="card" style="padding:28px;display:flex;flex-direction:column;gap:14px"><span style="width:14px;height:14px;transform:rotate(45deg);border:2px solid #9A4F37"></span><h1 class="serif" style="margin:0;font-size:30px;line-height:1.2">We couldn\'t build this guide</h1><p class="muted" style="margin:0">'+esc(S.errorMsg)+'</p>'+'<div class="row" style="gap:12px;margin-top:6px"><button class="btn" style="font-size:15px;padding:12px 20px" data-a="retry">Try again</button><button class="btn2" data-a="back">Edit inputs</button><button class="link" data-a="sample">View a sample guide</button></div></div></main>';
+}
+function badge(it){return '<span class="badge b-'+it.confidence+'" title="'+esc(TIP[it.confidence]+(it.note?' '+it.note:''))+'"><i></i>'+it.confidence.charAt(0).toUpperCase()+it.confidence.slice(1)+' confidence</span>';}
+function itemHTML(it,low){
+ var c=!!S.checked[it.id];
+ return '<li class="item"><button class="box'+(c?' on':'')+'" role="checkbox" aria-checked="'+c+'" aria-label="'+esc((c?'Unmark: ':'Mark done: ')+it.text)+'" data-a="chk" data-id="'+it.id+'">'+(c?'✓':'')+'</button><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px"><span class="txt'+(c?' on':'')+'">'+esc(it.text)+'</span><div class="row" style="gap:6px">'+badge(it)+(low?'<span class="tag">'+TYPES[it.type]+'</span>':'')+(BASIS[it.basis]?'<span class="tag">'+BASIS[it.basis]+'</span>':'')+'</div>'+
+ (it.note&&it.confidence!=='high'?'<p class="note">'+(low?'<strong style="font-weight:600;color:#86422D">Why uncertain:</strong> ':'')+esc(it.note)+'</p>':'')+'</div></li>';
+}
+function vResults(){
+ var g=S.guide,n=g.steps.length,a=Math.min(S.active,n-1),st=g.steps[a];
+ var all=[];g.steps.forEach(function(s){all=all.concat(s.items);});
+ var done=all.filter(function(i){return S.checked[i.id];}).length,pct=all.length?Math.round(done/all.length*100):0;
+ var stats=g.steps.map(function(s){return {d:s.items.filter(function(i){return S.checked[i.id];}).length,t:s.items.length};});
+ var horiz=window.innerWidth>=720;
+ var cps=g.steps.map(function(s,i){var isA=i===a,isD=stats[i].d===stats[i].t;return {s:s,i:i,isA:isA,cls:'dot'+(isD?' done':isA?' active':''),mark:isD?'✓':(i+1),prog:stats[i].d+'/'+stats[i].t,aria:'Step '+(i+1)+': '+s.title+', '+stats[i].d+' of '+stats[i].t+' done'};});
+ var tl=horiz?
+  '<ol class="tl">'+cps.map(function(c){return '<li><button data-a="sel" data-i="'+c.i+'" aria-label="'+esc(c.aria)+'"'+(c.isA?' aria-current="step"':'')+'><span class="'+c.cls+'">'+c.mark+'</span><span class="lbl'+(c.isA?' active-l':'')+'">'+esc(c.s.title)+'</span><span class="muted" style="font-size:12px">'+c.prog+'</span></button></li>';}).join('')+'</ol>'
+ :'<ol class="vl">'+cps.map(function(c){return '<li><button class="'+(c.isA?'cur':'')+'" data-a="sel" data-i="'+c.i+'" aria-label="'+esc(c.aria)+'"'+(c.isA?' aria-current="step"':'')+'><span class="'+c.cls+'">'+c.mark+'</span><span style="flex:1;line-height:1.3">'+esc(c.s.title)+'</span><span class="muted" style="font-size:12px;font-weight:400">'+c.prog+'</span></button></li>';}).join('')+'</ol>';
+ var secs=Object.keys(TYPES).map(function(k){
+  var items=st.items.filter(function(i){return i.type===k&&i.confidence!=='low';});if(!items.length)return '';
+  var key=a+':'+k,open=!S.closed[key],dn=items.filter(function(i){return S.checked[i.id];}).length;
+  return '<section class="acc'+(open?' open':'')+'"><button data-a="acc" data-k="'+key+'" aria-expanded="'+open+'"><span class="t">'+TYPES[k]+'</span><span class="muted" style="font-size:13px">'+dn+'/'+items.length+'</span><span class="chev" aria-hidden="true">▾</span></button>'+(open?'<ul>'+items.map(function(i){return itemHTML(i,false);}).join('')+'</ul>':'')+'</section>';
+ }).join('');
+ var lows=st.items.filter(function(i){return i.confidence==='low';});
+ var lowHTML=lows.length?'<section class="acc low'+(S.lowOpen?' open':'')+'"><button data-a="low" aria-expanded="'+S.lowOpen+'"><span aria-hidden="true" style="width:10px;height:10px;transform:rotate(45deg);border:2px solid #9A4F37;flex:none"></span><span class="t">Low confidence / Context-dependent</span><span class="muted" style="font-size:13px">'+lows.filter(function(i){return S.checked[i.id];}).length+'/'+lows.length+'</span><span class="chev" aria-hidden="true">▾</span></button>'+(S.lowOpen?'<div style="padding:0 18px 12px"><p class="note" style="margin-bottom:4px">These may apply, but evidence is thin or practice varies a lot. Watch what others do before acting on them.</p><ul style="padding:0">'+lows.map(function(i){return itemHTML(i,true);}).join('')+'</ul></div>':'')+'</section>':'';
+ var why=st.why?'<section class="acc why'+(S.whyOpen?' open':'')+'"><button data-a="why" aria-expanded="'+S.whyOpen+'"><span class="t">Why it matters</span><span class="chev" aria-hidden="true">▾</span></button>'+(S.whyOpen?'<p>'+esc(st.why)+'</p>':'')+'</section>':'';
+ var sd=stats[a];
+ var keys=[];g.steps.forEach(function(s,i){var k=s.items.filter(function(x){return x.key;});if(!k.length)k=s.items.filter(function(x){return x.confidence==='high';}).slice(0,1);k.forEach(function(it){keys.push({it:it,n:i});});});
+ function list(title,color,arr){return arr.length?'<h3 style="color:'+color+'">'+title+'</h3><ul class="b">'+arr.map(function(p){return '<li>'+esc(p)+'</li>';}).join('')+'</ul>':'';}
+ return '<main class="wrap" style="padding-top:16px;padding-bottom:96px">'+
+ '<section style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:28px"><div style="max-width:720px"><p class="eyebrow">'+esc(g.country)+'</p><h1 class="serif" style="margin:0 0 10px;font-size:clamp(30px,4.5vw,44px);line-height:1.1;letter-spacing:-.02em;text-wrap:balance">'+esc(g.title)+'</h1>'+(g.scopeNote?'<p class="muted" style="margin:0">'+esc(g.scopeNote)+'</p>':'')+'</div>'+
+ '<div style="min-width:220px;flex:0 1 280px"><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:8px"><span style="font-weight:600">Overall preparation</span><span class="muted">'+done+' of '+all.length+' · '+pct+'%</span></div><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+pct+'" aria-label="Overall progress"><div style="width:'+pct+'%"></div></div></div></section>'+
+ (all.length&&done===all.length?'<div role="status" style="display:flex;align-items:center;gap:14px;background:#E8EDE4;border-radius:16px;padding:16px 20px;margin-bottom:24px"><span style="width:28px;height:28px;border-radius:50%;background:#526B55;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:none">✓</span><span><strong style="font-weight:600">You\'ve reviewed every step.</strong> <span class="muted">Stay observant on the day and follow your hosts\' lead.</span></span></div>':'')+
+ '<nav aria-label="Activity steps" style="margin-bottom:28px">'+tl+'</nav>'+
+ '<div class="grid"><article id="step" class="card step" aria-labelledby="stt">'+
+ '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;margin-bottom:8px"><p class="eyebrow" style="margin:0;white-space:nowrap">Step '+(a+1)+' of '+n+'</p><p class="muted" style="margin:0;font-size:13px">'+sd.d+' of '+sd.t+' checked</p></div>'+
+ '<h2 id="stt" class="serif" style="margin:0 0 10px;font-size:clamp(26px,3.4vw,34px);line-height:1.15;text-wrap:balance">'+esc(st.title)+'</h2><p style="margin:0 0 16px;color:#454D45;font-size:17px">'+esc(st.summary)+'</p>'+
+ '<div class="bar" style="height:6px;margin-bottom:24px"><div style="width:'+(sd.t?Math.round(sd.d/sd.t*100):0)+'%;background:#879B83"></div></div>'+
+ '<div style="display:flex;flex-direction:column;gap:12px">'+secs+lowHTML+why+'</div>'+
+ '<div style="display:flex;justify-content:space-between;gap:12px;margin-top:24px;flex-wrap:wrap"><button class="btn2" data-a="prev"'+(a===0?' disabled style="opacity:.4"':'')+'>← Previous</button><button class="btn" style="font-size:15px;padding:12px 20px" data-a="next">'+(a<n-1?'Next step →':'Back to overview ↑')+'</button></div></article>'+
+ '<aside aria-label="Preparation summary"><section class="card" style="padding:22px;box-shadow:none"><h2 class="serif" style="margin:0 0 16px;font-size:24px">Preparation summary</h2>'+
+ list('Key principles','#526B55',g.summary.principles)+list('Critical mistakes to avoid','#86422D',g.summary.mistakes)+list('Sensitive or context-dependent','#6E5422',g.summary.sensitive)+
+ '<h3 style="color:#526B55;margin-bottom:4px">Key actions</h3><ul style="list-style:none;margin:0;padding:0">'+keys.map(function(k){var c=!!S.checked[k.it.id];return '<li class="item" style="gap:12px;padding:10px 0"><button class="box'+(c?' on':'')+'" style="width:24px;height:24px;border-radius:7px;font-size:13px" role="checkbox" aria-checked="'+c+'" aria-label="'+esc((c?'Unmark: ':'Mark done: ')+k.it.text)+'" data-a="chk" data-id="'+k.it.id+'">'+(c?'✓':'')+'</button><div style="flex:1;min-width:0"><span class="txt'+(c?' on':'')+'" style="font-size:14px">'+esc(k.it.text)+'</span><button class="link" style="display:block;font-size:12px;font-weight:400;padding-top:2px" data-a="sel" data-i="'+k.n+'">Step '+(k.n+1)+'</button></div></li>';}).join('')+'</ul></section>'+
+ '<section style="border:1px solid #DDE3D8;border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:12px"><h2 style="margin:0;font-size:15px;font-weight:600">How to read confidence</h2>'+
+ '<div class="legend"><span style="width:9px;height:9px;border-radius:50%;background:#526B55;flex:none"></span><span><strong style="font-weight:600">High</strong> <span class="muted">— widely documented and consistently observed.</span></span></div>'+
+ '<div class="legend"><span style="width:9px;height:9px;border-radius:50%;border:1.5px solid #8A6A2E;flex:none"></span><span><strong style="font-weight:600">Moderate</strong> <span class="muted">— common, but depends on setting, region or people involved.</span></span></div>'+
+ '<div class="legend"><span style="width:8px;height:8px;transform:rotate(45deg);border:1.5px solid #9A4F37;flex:none"></span><span><strong style="font-weight:600">Low</strong> <span class="muted">— limited evidence or highly variable. Kept separate.</span></span></div>'+
+ (g.limitations?'<p class="muted" style="margin:4px 0 0;font-size:13px;border-top:1px solid #E1E6DC;padding-top:12px"><strong style="font-weight:600;color:#303830">Limitations:</strong> '+esc(g.limitations)+'</p>':'')+
+ '<p class="muted" style="margin:0;font-size:13px">'+(S.isSample?'Sample guide written for illustration. It has not been independently verified.':'Generated by AI from general knowledge. Not independently verified, and no sources are cited. Check anything important with someone familiar with the setting.')+'</p>'+
+ '<button class="link" style="align-self:flex-start;font-size:13px;font-weight:400" data-a="reset">Reset checklist</button></section></aside></div></main>';
+}
+function render(){
+ var v=S.stage==='loading'?vLoading():S.stage==='clarify'?vClarify():S.stage==='error'?vError():(S.stage==='results'&&S.guide)?vResults():vInput();
+ app.innerHTML=v;
+ document.getElementById('newBtn').style.display=(S.stage==='results'&&S.guide)?'':'none';
+}
+function validate(){
+ var e={},a=S.activity.trim(),c=S.country.trim();
+ if(!a)e.activity='Tell us what you’re planning. A sentence is enough.';else if(a.length<8)e.activity='Add a few more words so the guide can be specific, e.g. who you’ll be with and the setting.';
+ if(!c)e.country='Which country will this take place in?';
+ S.errors=e;return !Object.keys(e).length;
+}
+var timer;
+function viaHTTP(url,headers,user){
+ return fetch(url,{method:'POST',headers:headers,body:JSON.stringify({model:MODEL,max_tokens:7000,system:SYSTEM,messages:[{role:'user',content:user}]})})
+  .then(function(r){return r.json().then(function(j){if(!r.ok){var er=new Error(r.status===401?'badkey':'http');throw er;}return textOf(j);});});
+}
+function freeAI(user){
+ var msgs=[{role:'system',content:SYSTEM},{role:'user',content:user}];
+ function post(){return fetch('https://text.pollinations.ai/openai',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({model:'openai',messages:msgs,response_format:{type:'json_object'},referrer:'customsprep'})}).then(function(r){if(!r.ok)throw new Error('http');return r.json();}).then(function(j){var t=j&&j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;if(!t)throw new Error('nores');return t;});}
+ function post2(){return fetch('https://text.pollinations.ai/',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({messages:msgs,model:'openai',jsonMode:true,referrer:'customsprep'})}).then(function(r){if(!r.ok)throw new Error('http');return r.text();});}
+ function get(){return fetch('https://text.pollinations.ai/'+encodeURIComponent(user)+'?json=true&referrer=customsprep&system='+encodeURIComponent(SYSTEM)).then(function(r){if(!r.ok)throw new Error('http');return r.text();});}
+ function ok(t){parseJSON(t);return t;}
+ return post().then(ok).catch(function(){return post2().then(ok);}).catch(function(){return get().then(ok);}).catch(function(){throw new Error('busy');});
+}
+function callAI(user){
+ if(API_ENDPOINT)return viaHTTP(API_ENDPOINT,{'content-type':'application/json'},user);
+ if(!window.claude||typeof window.claude.complete!=='function')return freeAI(user);
+ var tries=[
+  function(){return window.claude.complete({max_tokens:7000,system:SYSTEM,messages:[{role:'user',content:user}]});},
+  function(){return window.claude.complete({messages:[{role:'user',content:SYSTEM+'\n\n'+user}]});},
+  function(){return window.claude.complete(SYSTEM+'\n\n'+user);}];
+ var i=0,last;
+ function next(){if(i>=tries.length)return Promise.reject(last||new Error('nores'));var f=tries[i++];return Promise.resolve().then(f).then(function(r){var t=textOf(r);if(!t)throw new Error('nores');return t;}).catch(function(e){last=e;return next();});}
+ return next();
+}
+function generate(extra){
+ set({stage:'loading',phase:0,errorMsg:'',lastExtra:extra||''});
+ clearInterval(timer);timer=setInterval(function(){if(S.stage!=='loading')return clearInterval(timer);S.phase=Math.min(S.phase+1,PHASES.length-1);render();},3500);
+ var user='Activity: '+S.activity.trim()+'\nCountry: '+S.country.trim()+(extra?'\nAdditional detail from the user: '+extra+'\nDo not ask for clarification again; produce the guide.':'');
+ callAI(user).then(function(text){
+  clearInterval(timer);
+  var d=parseJSON(text);
+  if(d.status==='clarify'&&!extra&&d.clarification&&d.clarification.question){set({stage:'clarify',clarify:{question:d.clarification.question,suggestions:(d.clarification.suggestions||[]).slice(0,4)},clarifyAnswer:'',clarifyErr:''});}
+  else set({stage:'results',guide:normalize(d,S.country.trim()),isSample:false,active:0,checked:{},closed:{},whyOpen:true,lowOpen:true});
+ }).catch(function(e){
+  clearInterval(timer);
+  var m=e&&e.message==='busy'?'Our free AI service is busy right now. Wait about 20 seconds and try again, or explore the sample guide meanwhile.':e&&e.message==='http'?'The AI service returned an error. Wait a moment and try again.':
+   (e&&e.message==='parse')||e instanceof SyntaxError?'The response came back in an unexpected format. Trying again usually fixes this.':
+   e&&e.message==='empty'?'We couldn’t find reliable, specific guidance for this activity. Try adding detail about the setting or who you’ll be with.':
+   'Something went wrong while generating your guide. Check your connection and try again.';
+  set({stage:'error',errorMsg:m});
+ });
+}
+function selectStep(i){
+ set({active:i},true);
+ var el=document.getElementById('step');
+ if(el&&window.innerWidth<900)window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-12,behavior:'smooth'});
+}
+document.addEventListener('input',function(e){
+ if(e.target.id==='act'){S.activity=e.target.value;}
+ else if(e.target.id==='cty'){S.country=e.target.value;}
+ else if(e.target.id==='ca'){S.clarifyAnswer=e.target.value;}
+});
+document.addEventListener('submit',function(e){
+ e.preventDefault();
+ if(e.target.id==='f'){if(validate())generate();else{render();var b=document.querySelector('[aria-invalid="true"]');if(b)b.focus();}}
+ if(e.target.id==='cf'){var a=S.clarifyAnswer.trim();if(!a)return set({clarifyErr:'Add a short answer, or pick one of the suggestions.'},true);S.activity=S.activity.trim()+' — '+a;generate(a);}
+});
+document.addEventListener('click',function(e){
+ var b=e.target.closest('[data-a]');if(!b)return;
+ var a=b.getAttribute('data-a'),i=+b.getAttribute('data-i');
+ if(a==='home')set({stage:'input'});
+ else if(a==='new')set({stage:'input',activity:'',country:'',errors:{}});
+ else if(a==='ex'){var x=EXAMPLES[i];set({activity:x.activity,country:x.country,errors:{}},true);}
+ else if(a==='sample')set({stage:'results',guide:normalize(SAMPLE,'Japan'),isSample:true,active:0,checked:{},closed:{},activity:'Attending a business dinner with Japanese clients',country:'Japan'});
+ else if(a==='resume')set({stage:'results'});
+ else if(a==='back')set({stage:'input'});
+ else if(a==='retry')generate(S.lastExtra);
+ else if(a==='sug'){S.clarifyAnswer=S.clarify.suggestions[i];S.clarifyErr='';render();}
+ else if(a==='sel')selectStep(i);
+ else if(a==='chk'){var id=b.getAttribute('data-id'),c={};for(var k in S.checked)c[k]=S.checked[k];c[id]=!c[id];set({checked:c},true);}
+ else if(a==='acc'){var key=b.getAttribute('data-k');S.closed[key]=!S.closed[key];render();}
+ else if(a==='low'){S.lowOpen=!S.lowOpen;render();}
+ else if(a==='why'){S.whyOpen=!S.whyOpen;render();}
+ else if(a==='prev'){if(S.active>0)selectStep(S.active-1);}
+ else if(a==='next'){if(S.active<S.guide.steps.length-1)selectStep(S.active+1);else window.scrollTo({top:0,behavior:'smooth'});}
+ else if(a==='reset')set({checked:{}},true);
+});
+var rz;window.addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(function(){if(S.stage==='results')render();},150);});
+render();
+})();
+</script>
+</body>
+</html>
